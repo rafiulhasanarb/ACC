@@ -17,28 +17,23 @@ import Foundation
 
 extension FriendsAPI {
     
-    @MainActor
     static var never: FriendsAPI {
         results([])
     }
     
-    @MainActor
     static func once(_ friends: [Friend]) -> FriendsAPI {
         results([.success(friends)])
     }
     
-    @MainActor
     static func results(_ results: [Result<[Friend], Error>]) -> FriendsAPI {
         var results = results
         return resultBuilder { results.removeFirst() }
     }
     
-    @MainActor
     static func resultBuilder(_ resultBuilder: @escaping () -> Result<[Friend], Error>) -> FriendsAPI {
         FriendsAPIStub(resultBuilder: resultBuilder)
     }
     
-    @MainActor
     private class FriendsAPIStub: FriendsAPI {
         private let nextResult: () -> Result<[Friend], Error>
         

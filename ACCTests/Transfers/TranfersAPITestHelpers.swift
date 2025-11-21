@@ -17,28 +17,23 @@ import Foundation
 
 extension TransfersAPI {
     
-    @MainActor
     static func once(_ Transfers: [Transfer]) -> TransfersAPI {
         results([.success(Transfers)])
     }
     
-    @MainActor
     static func once(_ error: Error) -> TransfersAPI {
         results([.failure(error)])
     }
     
-    @MainActor
     static func results(_ results: [Result<[Transfer], Error>]) -> TransfersAPI {
         var mutableResults = results
         return resultBuilder { mutableResults.removeFirst() }
     }
     
-    @MainActor
     static func resultBuilder(_ resultBuilder: @escaping () -> Result<[Transfer], Error>) -> TransfersAPI {
         TransfersAPIStub(resultBuilder: resultBuilder)
     }
     
-    @MainActor
     private class TransfersAPIStub: TransfersAPI {
         private let nextResult: () -> Result<[Transfer], Error>
         

@@ -18,29 +18,24 @@ import Foundation
 
 extension FriendsCache {
     
-    @MainActor
     static var never: FriendsCache {
         results([])
     }
     
-    @MainActor
     static func once(_ friends: [Friend]) -> FriendsCache {
         results([.success(friends)])
     }
     
-    @MainActor
     static func once(_ error: Error) -> FriendsCache {
         results([.failure(error)])
     }
     
-    @MainActor
     static func saveCallback(
         _ saveCallback: @escaping ([Friend]) -> Void
     ) -> FriendsCache {
         results([], saveCallback)
     }
     
-    @MainActor
     static func results(
         _ results: [Result<[Friend], Error>],
         _ saveCallback: @escaping ([Friend]) -> Void = { _ in }
@@ -49,7 +44,6 @@ extension FriendsCache {
         return resultBuilder({ results.removeFirst() }, saveCallback)
     }
     
-    @MainActor
     static func resultBuilder(
         _ resultBuilder: @escaping () -> Result<[Friend], Error>,
         _ saveCallback: @escaping ([Friend]) -> Void = { _ in }
@@ -57,7 +51,6 @@ extension FriendsCache {
         FriendsCacheSpy(resultBuilder: resultBuilder, saveCallback: saveCallback)
     }
     
-    @MainActor
     private class FriendsCacheSpy: FriendsCache {
         private let nextResult: () -> Result<[Friend], Error>
         private let saveCallback: ([Friend]) -> Void

@@ -17,28 +17,23 @@ import Foundation
 
 extension CardAPI {
     
-    @MainActor
     static func once(_ cards: [Card]) -> CardAPI {
         results([.success(cards)])
     }
     
-    @MainActor
     static func once(_ error: Error) -> CardAPI {
         results([.failure(error)])
     }
     
-    @MainActor
     static func results(_ results: [Result<[Card], Error>]) -> CardAPI {
         var results = results
         return resultBuilder { results.removeFirst() }
     }
     
-    @MainActor
     static func resultBuilder(_ resultBuilder: @escaping () -> Result<[Card], Error>) -> CardAPI {
         CardAPIStub(resultBuilder: resultBuilder)
     }
     
-    @MainActor
     private class CardAPIStub: CardAPI {
         private let nextResult: () -> Result<[Card], Error>
         
